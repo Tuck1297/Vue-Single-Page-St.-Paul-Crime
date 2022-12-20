@@ -1,0 +1,38 @@
+{
+  "name": "stpaul-crime",
+  "version": "1.0.0",
+  "description": "RESTful Web Server and Single Page Application",
+  "author": {
+    "name": "Tucker Johnson",
+    "email": "john5653@stthomas.edu"
+  },
+  "contributors": [
+    {
+      "name": "Kevin McDonald",
+      "email": "mcdo7322@stthomas.edu"
+    },
+    {
+      "name": "Marcus Haldane",
+      "email": "hald8506@stthomas.edu"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tuck1297/RESTful-API.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@splidejs/vue-splide": "^0.6.12",
+    "@turf/turf": "^6.5.0",
+    "jquery": "^3.6.1",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.2.0",
+    "vite": "^3.2.4"
+  }
+}
