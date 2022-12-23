@@ -56,7 +56,7 @@ export default {
             //console.log('clicked')
             // this.$emit('incident_data_insert', insert_Object); 
 
-            let url = 'http://localhost:8000/new-incident'
+            let url = 'https://st-paul-api.herokuapp.com/new-incident'
             //console.log(url)
 
             this.uploadJSON("PUT", url, insert_Object)
@@ -99,23 +99,23 @@ export default {
                 <form onsubmit="return false">
                     <h1> New Incident Form: </h1>
                     <br>
-                    <label for="case_number">Case Number</label>
+                    <label for="case_number"><strong>Case Number</strong></label>
                     <input v-model="case_number" pattern="[0-9]*" type="number" id="case_number"
                         placeholder="e.g. 45623188" required><br>
-                    <label for="date">Date</label>
+                    <label for="date"><strong>Date</strong></label>
                     <input v-model="date" type="date" id="date" required><br>
-                    <label for="time">Time</label>
+                    <label for="time"><strong>Time</strong></label>
                     <input v-model="time" type="time" id="time" step="1" required><br>
-                    <label for="code">Code</label>
+                    <label for="code"><strong>Code</strong></label>
                     <input v-model="code" type="number" id="code" placeholder="e.g. 4" required><br>
-                    <label for="incident">Incident</label>
+                    <label for="incident"><strong>Incident</strong></label>
                     <input v-model="incident" type="text" id="incident" placeholder="e.g. Robbery" required><br>
-                    <label for="police_grid">Police Grid</label>
+                    <label for="police_grid"><strong>Police Grid</strong></label>
                     <input v-model="police_grid" type="number" id="police_grid" placeholder="e.g. 5" required><br>
-                    <label for="neighborhood_number">Neighborhood Number</label>
+                    <label for="neighborhood_number"><strong>Neighborhood Number</strong></label>
                     <input v-model="neighborhood_number" type="number" id="neighborhood_number" placeholder="e.g. 6"
                         required><br>
-                    <label for="block">Block</label>
+                    <label for="block"><strong>Block</strong></label>
                     <input v-model="block" type="text" id="block" placeholder="e.g. 2115 Summit Avenue " required><br>
                     <!-- <p v-if=this.Error>{{Error}}</p> -->
                     <div id="containerSubmit">

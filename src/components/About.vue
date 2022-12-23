@@ -18,28 +18,7 @@ export default defineComponent({
                     hobby: "Photography",
                     age: 25,
                     image: "../../images/Tucker Johnson.png"
-                },
-                profile_2: {
-                    name: "Kevin McDonald",
-                    bio: `When I transferred to St.Thomas, I knew I wanted to go into computer science, but had no idea what
-                    specialty or field I wanted to enter. Now I know that I would like to go into Artifcial Intelligence. I plan to 
-                    go for my masters in Software Engineering after I graduate this semester. This will more than likely happen
-                    once I find a job and then go part time.`,
-                    hobby: "Golf",
-                    age: 28,
-                    image: "../../images/Kevin McDonald.jpg" // this should be a 300 by 300px image
-                },
-                profile_3: {
-                    name: "Marcus Haldane",
-                    bio: `Marcus began to work on his Computer Science degree at the University of Colorado at Boulder where he 
-                    enjoyed skiing and various other outdoor activities. During the outbreak of COVID-19, Marcus moved back to Minnesota,
-                    where he had grown up. Shortly after this, Marcus was able to begin attending St. Thomas classes in person, a definite 
-                    pull factor, and continues to work towards his degree to this day.`,
-                    hobby: "Skiing, Snowshoeing, Biking, 3D Printing",
-                    age: 24,
-                    image: "../../images/Marcus_Haldane.jpg" // should be a 300px by 300px image
-                }
-                
+                }                
             },
             observations: {
                 observation_1: {
@@ -159,6 +138,7 @@ export default defineComponent({
                     </div>
                 </div>
                 <div class="flex">
+                    <!-- Refactor this at a later date -->
                     <div v-for="element in profiles">
                         <div class="card">
                             <img class="bio_image" :src="element.image" :alt="element.name + 'Profile Picture'">
@@ -287,11 +267,31 @@ export default defineComponent({
     border-radius: 20px;
     background-color: rgba(88, 107, 164, 0.8);
     border: 8px double black;
+    animation: shrink 1s ease 0s forwards;
 }
 
 .card:hover {
     background-color: rgba(255, 255, 255, 0.5);
-    transform: scale(1.2)
+    animation: enlarge 1s ease 0s forwards;
+    animation-iteration-count: 1;
+}
+
+@keyframes shrink{
+    0% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1.0);
+    }
+}
+
+@keyframes enlarge {
+    0% {
+        transform: scale(1.0);
+    }
+    100% {
+        transform: scale(1.2);
+    }
 }
 
 .flex {
@@ -342,4 +342,5 @@ h4 {
     justify-content: center;
     padding: 20px;
 }
+
 </style>
