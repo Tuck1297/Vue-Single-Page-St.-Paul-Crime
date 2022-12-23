@@ -4,6 +4,8 @@ export default {
     // get data from inputs and send to main file to be sent to api
     data() {
         return {
+            // APIurl: "https://st-paul-api.herokuapp.com",
+            APIurl: "http://localhost:8000",
             case_number: "",
             date: "",
             time: "",
@@ -56,7 +58,7 @@ export default {
             //console.log('clicked')
             // this.$emit('incident_data_insert', insert_Object); 
 
-            let url = 'https://st-paul-api.herokuapp.com/new-incident'
+            let url = this.APIurl + '/new-incident'
             //console.log(url)
 
             this.uploadJSON("PUT", url, insert_Object)
@@ -95,32 +97,30 @@ export default {
             <div class="large-2 medium-1 small-0 cell"></div>
             <div class="large-8 medium-10 small-12 cell">
                 <br><br>
-
                 <form onsubmit="return false">
-                    <h1> New Incident Form: </h1>
+                    <h1 id="form_info_header"> New Incident Form: </h1>
                     <br>
-                    <label for="case_number"><strong>Case Number</strong></label>
-                    <input v-model="case_number" pattern="[0-9]*" type="number" id="case_number"
-                        placeholder="e.g. 45623188" required><br>
-                    <label for="date"><strong>Date</strong></label>
-                    <input v-model="date" type="date" id="date" required><br>
-                    <label for="time"><strong>Time</strong></label>
-                    <input v-model="time" type="time" id="time" step="1" required><br>
-                    <label for="code"><strong>Code</strong></label>
-                    <input v-model="code" type="number" id="code" placeholder="e.g. 4" required><br>
-                    <label for="incident"><strong>Incident</strong></label>
-                    <input v-model="incident" type="text" id="incident" placeholder="e.g. Robbery" required><br>
-                    <label for="police_grid"><strong>Police Grid</strong></label>
-                    <input v-model="police_grid" type="number" id="police_grid" placeholder="e.g. 5" required><br>
-                    <label for="neighborhood_number"><strong>Neighborhood Number</strong></label>
-                    <input v-model="neighborhood_number" type="number" id="neighborhood_number" placeholder="e.g. 6"
-                        required><br>
-                    <label for="block"><strong>Block</strong></label>
+                    <label style="margin: -2px;" for="case_number"><strong>Case Number</strong></label>
+                    <input style= "margin: 2px;" v-model="case_number" pattern="[0-9]*" type="number" id="case_number"
+                        placeholder="e.g. 45623188" required>
+                    <label style="margin: -2px;" for="date"><strong>Date</strong></label>
+                    <input style= "margin: 2px;" v-model="date" type="date" id="date" required>
+                    <label style="margin: -2px;" for="time"><strong>Time</strong></label>
+                    <input style= "margin: 2px;" v-model="time" type="time" id="time" step="1" required>
+                    <label style="margin: -2px;" for="code"><strong>Code</strong></label>
+                    <input style= "margin: 2px;" v-model="code" type="number" id="code" placeholder="e.g. 4" required>
+                    <label style="margin: -2px;" for="incident"><strong>Incident</strong></label>
+                    <input style= "margin: 2px;" v-model="incident" type="text" id="incident" placeholder="e.g. Robbery" required>
+                    <label style="margin: -2px;" for="police_grid"><strong>Police Grid</strong></label>
+                    <input style= "margin: 2px;" v-model="police_grid" type="number" id="police_grid" placeholder="e.g. 5" required>
+                    <label style="margin: -2px;" for="neighborhood_number"><strong>Neighborhood Number</strong></label>
+                    <input style= "margin: 2px;" v-model="neighborhood_number" type="number" id="neighborhood_number" placeholder="e.g. 6"
+                        required>
+                    <label style="margin: -2px;" for="block"><strong>Block</strong></label>
                     <input v-model="block" type="text" id="block" placeholder="e.g. 2115 Summit Avenue " required><br>
-                    <!-- <p v-if=this.Error>{{Error}}</p> -->
                     <div id="containerSubmit">
-                        <input type="submit" id="submitBtn" @click="sendDataToParent">
-                        <input type="submit" id="submitBtnFake">
+                        <input style= "margin: -20px;" type="submit" id="submitBtn" @click="sendDataToParent">
+                        <input style= "margin: -20px;" type="submit" id="submitBtnFake">
                     </div>
                 </form><br>
                 <!-- <p>{{case_number}}, {{date}}, {{time}}, {{code}}, {{incident}},
@@ -133,7 +133,7 @@ export default {
 </template>
 
 <style>
-h1 {
+#form_info_header {
     font-size: 1.2rem;
     margin-top: -63px;
     background-color: white;
@@ -163,6 +163,7 @@ label {
 form {
     border: 1px solid black;
     padding: 50px;
+    margin-top: -30px;
     margin-bottom: 30px;
     background-color: rgba(213, 219, 216, 0.8);
     border-radius: 1rem;

@@ -23,38 +23,21 @@ export default defineComponent({
             observations: {
                 observation_1: {
                     author: "Tucker Johnson",
-                    observation: `When looking thorugh the St. Paul crime data using this tool, I found it 
-                    interesting how in most time spans Highland had fewer violent crimes compared to Capitol River.`
+                    observation: `Looking over the St. Paul crime statistics using this tool, I noticed that Highland 
+                    had less violent crimes than Capitol River throughout most periods of time. `
                 },
                 observation_2: {
                     author: "Tucker Johnson",
-                    observation: `In all of St. Paul in the Thanksgiving of 2021 there were only three violent crimes. Two of 
-                    which were family/child related. It was also interesting to note that there were two times as many proactive 
-                    police visits in certain neighborhoods like North End on Christmas Eve compared to Christmas day in 2021.`
+                    observation: `There were just three violent offenses committed in St. Paul over Thanksgiving 2021.
+                    Two of them were linked to family/children. It was also noteworthy to see that there were twice as
+                    many proactive police visits on Christmas Eve in some communities like North End than there were on 
+                    Christmas Day in 2021. `
                 },
                 observation_3: {
-                    author: "Kevin McDonald",
-                    observation: `One thing that I had noticed was that Union Park had the 3rd highest amount of crimes,
-                    which is concering since it's very close to our school.`
-                },
-                observation_4: {
-                    author: "Kevin McDonald",
-                    observation: `One observation I had noticed was how little of crime happens in Summit Hill, and the
-                    crimes that were committed were nonviolent crimes. Most of the crimes were thefts which makes sense
-                    considering the nice houses in that area may draw appeal for potential burglary.`
-                },
-                observation_5: {
-                    author: "Marcus Haldane",
-                    observation: `One positive observation I noticed was that when the filter for 100 code crimes was applied 
-                    there were very few results returned. Given the accuracy of the reporting of homicide, 
-                    this would be excellent news as it would mean that this sort of violent crime is rare.`
-                },
-                observation_6: {
-                    author: "Marcus Haldane",
-                    observation: `One negative observation I had was the amount of property crime including theft and arson is 
-                    very high. Additionally, there is also a very high amount of drug crimes in the database. These observations, 
-                    along with the above observation on violent crimes, paint a picture of mostly non-violent criminality in the St. 
-                    Paul area under study.`
+                    author: "Tucker Johnson",
+                    observation: `I was relieved to see that there were very few violent crimes committed around the 
+                    University of St. Thomas in 2022. However, there were several auto thefts. When parking in St. Paul, 
+                    make careful to lock your car and leave no valuables inside! `
                 }
             },
             logo: {

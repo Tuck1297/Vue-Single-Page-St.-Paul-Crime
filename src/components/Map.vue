@@ -9,7 +9,6 @@ export default {
     },
     watch: {
         formCondition() {
-            //console.log(this.formCondition)
             // If true then repopulate the data
             if (this.formCondition == true) {
                 this.tableData = [];
@@ -20,6 +19,8 @@ export default {
     },
     data() {
         return {
+            // APIurl: "https://st-paul-api.herokuapp.com",
+            APIurl: "http://localhost:8000",
             codes: [],
             neighborhoods: [],
             incidents: [],
@@ -36,25 +37,7 @@ export default {
                 isOpen: false,
                 neighborhood: {
                     isOpen: false,
-                    options: [
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"},
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"},
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"},
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"},
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"},
-                        // {label: "Hello World"}, 
-                        // {label: "Hello World"}
-                    ]
+                    options: []
                 },
                 incidents: {
                     isOpen: false,
@@ -183,7 +166,6 @@ export default {
             let selectElement = document.querySelector('#search-condition');
             let output = selectElement.options[selectElement.selectedIndex].value;
             if (output == 'Address') {
-                // console.log('check address')
                 this.getJSON(`https://nominatim.openstreetmap.org/search?q='${this.searchData}, St. Paul, 
                  Minnesota'&format=json&limit=1&accept-language=en&countrycodes=us`)
                     .then((data) => {
@@ -207,7 +189,6 @@ export default {
                 let value = this.searchData.replace(/[\(\)]/g, '').split(',');
                 let lat = parseFloat(value[0]);
                 let lng = parseFloat(value[1]);
-                //console.log(lat, lng)
                 this.getAddress(lat, lng, (addressData) => {
                     if (lat != undefined || lng != undefined) {
                         let coords = [lat, lng];
@@ -219,9 +200,9 @@ export default {
             }
         },
         getData(codesQuery, hoodQuery, incidentQuery) {
-            let codeHTTP = `https://st-paul-api.herokuapp.com/codes?${codesQuery}`;
-            let hoodHTTP = `https://st-paul-api.herokuapp.com/neighborhoods?${hoodQuery}`;
-            let incidentHTTP = `https://st-paul-api.herokuapp.com/incidents?${incidentQuery}`;
+            let codeHTTP = `${this.APIurl}/codes?${codesQuery}`;
+            let hoodHTTP = `${this.APIurl}/neighborhoods?${hoodQuery}`;
+            let incidentHTTP = `${this.APIurl}/incidents?${incidentQuery}`;
             $("#hour-glass-spinner").css("display", "block");
             $("#table-content").css("display", "none");
             Promise.all([this.getJSON(codeHTTP), this.getJSON(hoodHTTP), this.getJSON(incidentHTTP)])
@@ -238,7 +219,6 @@ export default {
                         });
                     }
                     this.tableData = this.incidents;
-
                     this.tableData = this.incidents.map((element) => {
                         let code = element.code;
                         let neighborhood_number = element.neighborhood_number;
@@ -246,7 +226,6 @@ export default {
                         let updateVal = element;
                         updateVal = this.mergeCrimeDesc(code, updateVal);
                         updateVal = this.mergeNeighborhood(neighborhood_number, updateVal);
-                        // let blockArray = block.split(' ');
                         updateVal.block = this.replaceX(block.split(' '));
                         return updateVal;
                     })
@@ -297,6 +276,58 @@ export default {
                 // replace Xs with 0s in blockArray[0] 
                 blockArray[0] = `${blockArray[0].replaceAll('X', '0')}`
             }
+            // loop over the rest of the address data and update
+            for (let i = 0; i < blockArray.length; i++) {
+                switch (blockArray[i]) {
+                    case 'LNDG':
+                        blockArray[i] = 'LANE'
+                        break;
+                    case 'AVE':
+                        blockArray[i] = 'AVENUE'
+                        break;
+                    case 'ST':
+                        blockArray[i] = 'STREET'
+                        break;
+                    case 'PL':
+                        blockArray[i] = 'PLACE'
+                        break;
+                    case 'W':
+                        blockArray[i] = 'WEST'
+                        break;
+                    case 'N':
+                        blockArray[i] = 'NORTH'
+                        break;
+                    case 'E':
+                        blockArray[i] = 'EAST'
+                        break;
+                    case 'S':
+                        blockArray[i] = 'SOUTH'
+                        break;
+                    case 'DR':
+                        blockArray[i] = 'DRIVE'
+                        break;
+                    case 'PKWY':
+                        blockArray[i] = 'PARKWAY'
+                        break;
+                    case 'R':
+                        blockArray[i] = 'ROAD'
+                        break;
+                    case '00':
+                        blockArray[i] = ''
+                        break;
+                    case '0':
+                        blockArray[i] = ''
+                        break;
+                    case '000':
+                        blockArray[i] = ''
+                        break;
+                    case 'STPAUL':
+                        blockArray[i] = 'ST. PAUL'
+                        break;
+                    default:
+                    // nothing
+                }
+            }
             return blockArray.join(' ');
         },
         getIncidentsMetaData(tuple) {
@@ -321,7 +352,7 @@ export default {
                 toRaw(this.leaflet.map).removeLayer(toRaw(this.leaflet.searchMarker))
                 this.leaflet.searchMarker = null;
             }
-            let url = "https://st-paul-api.herokuapp.com//remove-incident"
+            let url = this.APIurl + "/remove-incident"
             this.uploadJSON("DELETE", url, { case_number: case_number }).then((data) => {
                 // this.tableData.splice(index, 1);
                 const $table = $('table');
@@ -377,57 +408,7 @@ export default {
                 let value = elementArr[element];
                 if (value == 'AND') {
                     elementArr = elementArr.slice(0, element);
-                    console.log(elementArr)
                     break;
-                }
-                switch (value) {
-                    case 'LNDG':
-                        elementArr[element] = 'Lane'
-                        break;
-                    case 'AVE':
-                        elementArr[element] = 'Avenue'
-                        break;
-                    case 'ST':
-                        elementArr[element] = 'Street'
-                        break;
-                    case 'PL':
-                        elementArr[element] = 'Place'
-                        break;
-                    case 'W':
-                        elementArr[element] = 'West'
-                        break;
-                    case 'N':
-                        elementArr[element] = 'North'
-                        break;
-                    case 'E':
-                        elementArr[element] = 'East'
-                        break;
-                    case 'S':
-                        elementArr[element] = 'South'
-                        break;
-                    case 'DR':
-                        elementArr[element] = 'Drive'
-                        break;
-                    case 'PKWY':
-                        elementArr[element] = 'Parkway'
-                        break;
-                    case 'R':
-                        elementArr[element] = 'Road'
-                        break;
-                    case '00':
-                        elementArr[element] = ''
-                        break;
-                    case '0':
-                        elementArr[element] = ''
-                        break;
-                    case '000':
-                        elementArr[element] = ''
-                        break;
-                    case 'STPAUL':
-                        elementArr[element] = 'St. Paul'
-                        break;
-                    default:
-                    // nothing
                 }
             }
             let search = elementArr.join(' ');
@@ -465,7 +446,6 @@ export default {
                     this.scrollToTop();
                 })
         },
-
         onMapAction(data) {
             let coords = null;
             if (data == 'getcenter') {
@@ -487,7 +467,6 @@ export default {
         },
         createMarker(message, coords, markerColor, typeMarker) {
             let marker;
-            // console.log(coords)
             if (toRaw(this.leaflet.searchMarker) == null) {
                 marker = new L.marker(coords, { icon: this.customMapTag(markerColor, typeMarker), center: false });
                 marker._id = 'marker';
@@ -500,7 +479,6 @@ export default {
             } else {
                 toRaw(this.leaflet.searchMarker).setPopupContent(message, { closeButton: true });
                 toRaw(this.leaflet.searchMarker).setLatLng(coords);
-                //console.log(markerColor)
                 $('span#Search').css('backgroundColor', markerColor)
             }
 
@@ -519,7 +497,6 @@ export default {
             let south = bounds.getSouth();
             let west = bounds.getWest();
             let east = bounds.getEast();
-
             let latlngs = [[west, north],
             [east, north],
             [east, south],
@@ -577,7 +554,7 @@ export default {
         addNeighborhoodTags() {
             // Add neighborhood Tags
             $(toRaw(this.leaflet.neighborhood_markers)).each((key, value) => {
-                this.getJSON(`https://st-paul-api.herokuapp.com/neighborhoods?id=${key + 1}`).then((data) => {
+                this.getJSON(`${this.APIurl}/neighborhoods?id=${key + 1}`).then((data) => {
                     let message = this.markerPopUp([`<strong>${data[0].neighborhood_name}</strong>`,
                     `Latitude: ${value.location[0]}`, `Longitude: ${value.location[1]}`, `Total Crimes: ${this.totalCrimes[key + 1]}`]);
                     this.leaflet.neighborhood_markers[key].marker = this.createMarker(message, [value.location[0], value.location[1]], '#586ba4', 'Neighborhood');
@@ -588,17 +565,15 @@ export default {
         updateNeighborhoodTags() {
             // Add neighborhood Tags
             $(toRaw(this.leaflet.neighborhood_markers)).each((key, value) => {
-                this.getJSON(`https://st-paul-api.herokuapp.com/neighborhoods?id=${key + 1}`).then((data) => {
+                this.getJSON(`${this.APIurl}/neighborhoods?id=${key + 1}`).then((data) => {
                     let message = this.markerPopUp([`<strong>${data[0].neighborhood_name}</strong>`,
                     `Latitude: ${value.location[0]}`, `Longitude: ${value.location[1]}`, `Total Crimes: ${this.totalCrimes[key + 1]}`]);
                     // this.createMarker(message, [value.location[0], value.location[1]], '#586ba4', 'Neighborhood');
-                    //console.log(this.leaflet.neighborhood_markers[key], message)
                     toRaw(this.leaflet.neighborhood_markers[key].marker).setPopupContent(message, { closeButton: true });
                 })
             })
         },
         markerInPolygon(coords, polygonCoords) {
-            // console.log(coords, polygonCoords)
             var polyPoints = polygonCoords;
             var x = coords.lat, y = coords.lng;
             var inside = false;
@@ -626,7 +601,6 @@ export default {
             return undefined;
         },
         bindTableDisplayConditions(element) {
-            console.log(element)
             let returnString = this.checkTableDisplayConditions(element);
             return `${returnString} ${element.neighborhood_number}`;
         },
@@ -696,7 +670,6 @@ export default {
                 }
             }
             incidentQuery += incidentString;
-            console.log(incidentQuery)
             this.getData('', '', `${incidentQuery}`);
         }
     },
@@ -802,7 +775,7 @@ export default {
                             @click="filterUI.neighborhood.isOpen = !filterUI.neighborhood.isOpen">Neighborhoods <img
                                 src="../../images/down-arrow.png" alt="Down Arrow">
                             <div style="display: flex; justify-content: center; ">
-                                <ul class="drop-down-UI dropdown_content dropdown_menu dropdown_menu--animated dropdown_menu-1">
+                                <ul class="drop-down-UI dropdown_menu dropdown_menu--animated dropdown_menu-1">
                                     <div style="display: flex; justify-content:space-evenly">
                                         <div>
                                             <li v-for="(option, index) in filterUI.neighborhood.options"
@@ -830,7 +803,7 @@ export default {
                         <button id="incident-btn" class="ui-btn dropdown dropdown-menu-btn-animation">Incidents <img
                                 src="../../images/down-arrow.png" alt="Down Arrow">
                             <div style="display: flex; justify-content: center; ">
-                                <ul class="drop-down-UI dropdown_content dropdown_menu dropdown_menu--animated dropdown_menu-1">
+                                <ul class="drop-down-UI dropdown_menu dropdown_menu--animated dropdown_menu-1">
                                     <div style="display: flex; justify-content:space-evenly">
                                         <div>
                                             <li v-for="(option, index) in filterUI.incidents.options"
@@ -860,7 +833,7 @@ export default {
                             <label for="end-date"><strong>End Date:</strong></label>
                             <input id="end-date" type="date" v-model="filterUI.endDate" />
                         </div>
-                        <button id="update-btn" class="ui-btn" @click="this.tryUI()">UPDATE</button>
+                        <button id="update-btn" class="ui-btn" @click="this.tryUI()">Update</button>
                     </div>
                 </div>
             </div>
@@ -1006,8 +979,6 @@ img {
     margin: auto;
 }
 
-.buffer {}
-
 #leafletmap {
     height: 500px;
 }
@@ -1045,7 +1016,7 @@ img {
 }
 
 #checkmark {
-    margin-top: 5px;
+    margin-top: -2px;
     padding-left: 10px;
 }
 
@@ -1094,19 +1065,6 @@ label {
     }
 }
 
-
-@keyframes rotateMenu {
-    0% {
-      transform: rotateX(-90deg)
-    }
-    70% {
-      transform: rotateX(20deg)
-    }
-    100% {
-      transform: rotateX(0deg)
-    }
-}
-
 .dropdown_menu {
     position: absolute;
     perspective: 1000px;
@@ -1127,8 +1085,7 @@ label {
 .lds-hourglass {
   position: relative;
   width: 80px;
-  height: 80px;
-  display: none; 
+  height: 80px; 
 }
 .lds-hourglass:after {
   content: " ";
@@ -1138,8 +1095,8 @@ label {
   height: 0;
   margin: 8px;
   box-sizing: border-box;
-  border: 32px solid #fff;
-  border-color: #fff transparent #fff transparent;
+  border: 32px solid #d5dbd8;
+  border-color: #d5dbd8 transparent #d5dbd8 transparent;
   animation: lds-hourglass 1.2s infinite;
 }
 @keyframes lds-hourglass {
