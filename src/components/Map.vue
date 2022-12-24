@@ -19,6 +19,7 @@ export default {
     },
     data() {
         return {
+            dataLoaded: true,
             // APIurl: "https://st-paul-api.herokuapp.com",
             APIurl: "http://localhost:8000",
             codes: [],
@@ -231,12 +232,15 @@ export default {
                     })
                     $("#hour-glass-spinner").css("display", "none");
                     $("#table-content").css("display", "");
+                    $("#over-loading-element").css("display", "none");
                 })
                 .catch((err) => {
                     $("#hour-glass-spinner").css("display", "none");
                     $("#table-content").css("display", "");
+                    $("#over-loading-element").css("display", "none");
                     console.log(err)
-                    alert("Error loading the data, please refresh your page...")
+                    this.dataLoaded = false; 
+                    // alert("Error loading the data, please refresh your page...")
                 })
         },
         countIncidents(callback) {
@@ -741,156 +745,172 @@ export default {
 </script>
 
 <template>
-    <div class="grid-container">
-        <div class="grid-x">
-            <div style="height: 20px;"></div>
-        </div>
-        <div class="grid-x">
-            <div class="large-1 medium-1 small-0 cell buffer"></div>
-            <div class="large-10 medium-10 small-12 cell search_format">
-                <input v-model="searchData" type="text" id="textbox_format" placeholder="e.g. 2115 Summit Avenue"
-                    required>
-                <select name="search-condition" id="search-condition">
-                    <option value="Address">Address</option>
-                    <option value="Lat/Lon">Lat/Lon</option>
-                </select>
-                <button type="button" class="button" @click="submitSearch">Search</button>
+    <div v-if="this.dataLoaded">
+        <div class="grid-container">
+            <div class="grid-x">
+                <div style="height: 20px;"></div>
             </div>
-            <div class="large-1 medium-1 small-0 cell buffer"></div>
-            <div class="large-12 medium-12 small-12 cell" style="height: 5px;"></div>
-            <div class="large-1 medium-1 small-0 cell buffer"></div>
-            <div id="leafletmap" class="large-10 medium-10 small-12 cell"></div>
-            <div class="large-1 medium-1 small-0 cell buffer"></div>
-        </div>
-        <div class="grid-x grid-padding-x">
-            <div class="large-12 medium-12 small-12 cell">
-                <button id="filter-dropdown-btn" class="ui-btn dropdown-menu-btn-animation"
-                    @click="filterUI.isOpen = !filterUI.isOpen">Filters<img src="../../images/down-arrow.png"
-                        alt="Down Arrow"></button>
-                <div id="ui-filters" v-if="filterUI.isOpen" class="dropdown-menu-btn-animation">
-                    <label for="input"><strong>Maximum Crimes Imported:</strong></label>
-                    <input v-model="filterUI.limitUI" id="limit-text-bar" type="number" placeholder="0">
-                    <div>
-                        <button id="neighborhood-btn" class="ui-btn dropdown"
-                            @click="filterUI.neighborhood.isOpen = !filterUI.neighborhood.isOpen">Neighborhoods <img
-                                src="../../images/down-arrow.png" alt="Down Arrow">
-                            <div style="display: flex; justify-content: center; ">
-                                <ul class="drop-down-UI dropdown_menu dropdown_menu--animated dropdown_menu-1">
-                                    <div style="display: flex; justify-content:space-evenly">
-                                        <div>
-                                            <li v-for="(option, index) in filterUI.neighborhood.options"
-                                                :key="option.value" class="dropdown-item">
-                                                <label id="checkmark" v-if="index < 9">
-                                                    <input type="checkbox" v-model="option.checked" />
-                                                    {{ option.label }}
-                                                </label>
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li v-for="(option, index) in filterUI.neighborhood.options"
-                                                :key="option.value" class="dropdown-item">
-                                                <label id="checkmark" v-if="index >= 9">
-                                                    <input type="checkbox" v-model="option.checked" />
-                                                    {{ option.label }}
-                                                </label>
-                                            </li>
-                                        </div>
-                                    </div>
-                                </ul>
-                            </div>
-                        </button>
-                        <br>
-                        <button id="incident-btn" class="ui-btn dropdown dropdown-menu-btn-animation">Incidents <img
-                                src="../../images/down-arrow.png" alt="Down Arrow">
-                            <div style="display: flex; justify-content: center; ">
-                                <ul class="drop-down-UI dropdown_menu dropdown_menu--animated dropdown_menu-1">
-                                    <div style="display: flex; justify-content:space-evenly">
-                                        <div>
-                                            <li v-for="(option, index) in filterUI.incidents.options"
-                                                :key="option.value" class="dropdown-item">
-                                                <label id="checkmark" v-if="index < 6">
-                                                    <input type="checkbox" v-model="option.checked" />
-                                                    {{ option.label }}
-                                                </label>
-                                            </li>
-                                        </div>
-                                        <div>
-                                            <li v-for="(option, index) in filterUI.incidents.options"
-                                                :key="option.value" class="dropdown-item">
-                                                <label id="checkmark" v-if="index >= 6">
-                                                    <input type="checkbox" v-model="option.checked" />
-                                                    {{ option.label }}
-                                                </label>
-                                            </li>
-                                        </div>
-                                    </div>
-                                </ul>
-                            </div>
-                        </button>
+            <div class="grid-x">
+                <div class="large-1 medium-1 small-0 cell buffer"></div>
+                <div class="large-10 medium-10 small-12 cell search_format">
+                    <input v-model="searchData" type="text" id="textbox_format" placeholder="e.g. 2115 Summit Avenue"
+                        required>
+                    <select name="search-condition" id="search-condition">
+                        <option value="Address">Address</option>
+                        <option value="Lat/Lon">Lat/Lon</option>
+                    </select>
+                    <button type="button" class="button" @click="submitSearch">Search</button>
+                </div>
+                <div class="large-1 medium-1 small-0 cell buffer"></div>
+                <div class="large-12 medium-12 small-12 cell" style="height: 5px;"></div>
+                <div class="large-1 medium-1 small-0 cell buffer"></div>
+                <div id="leafletmap" class="large-10 medium-10 small-12 cell"></div>
+                <div class="large-1 medium-1 small-0 cell buffer"></div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="large-12 medium-12 small-12 cell">
+                    <button id="filter-dropdown-btn" class="ui-btn dropdown-menu-btn-animation"
+                        @click="filterUI.isOpen = !filterUI.isOpen">Filters<img src="../../images/down-arrow.png"
+                            alt="Down Arrow"></button>
+                    <div id="ui-filters" v-if="filterUI.isOpen" class="dropdown-menu-btn-animation">
+                        <label for="input"><strong>Maximum Crimes Imported:</strong></label>
+                        <input v-model="filterUI.limitUI" id="limit-text-bar" type="number" placeholder="0">
                         <div>
-                            <label for="start-date"><strong>Start Date:</strong></label>
-                            <input id="start-date" type="date" v-model="filterUI.startDate" />
-                            <label for="end-date"><strong>End Date:</strong></label>
-                            <input id="end-date" type="date" v-model="filterUI.endDate" />
+                            <button id="neighborhood-btn" class="ui-btn dropdown"
+                                @click="filterUI.neighborhood.isOpen = !filterUI.neighborhood.isOpen">Neighborhoods <img
+                                    src="../../images/down-arrow.png" alt="Down Arrow">
+                                <div style="display: flex; justify-content: center; ">
+                                    <ul class="drop-down-UI dropdown_menu dropdown_menu--animated dropdown_menu-1">
+                                        <div style="display: flex; justify-content:space-evenly">
+                                            <div>
+                                                <li v-for="(option, index) in filterUI.neighborhood.options"
+                                                    :key="option.value" class="dropdown-item">
+                                                    <label id="checkmark" v-if="index < 9">
+                                                        <input type="checkbox" v-model="option.checked" />
+                                                        {{ option.label }}
+                                                    </label>
+                                                </li>
+                                            </div>
+                                            <div>
+                                                <li v-for="(option, index) in filterUI.neighborhood.options"
+                                                    :key="option.value" class="dropdown-item">
+                                                    <label id="checkmark" v-if="index >= 9">
+                                                        <input type="checkbox" v-model="option.checked" />
+                                                        {{ option.label }}
+                                                    </label>
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </button>
+                            <br>
+                            <button id="incident-btn" class="ui-btn dropdown dropdown-menu-btn-animation">Incidents <img
+                                    src="../../images/down-arrow.png" alt="Down Arrow">
+                                <div style="display: flex; justify-content: center; ">
+                                    <ul class="drop-down-UI dropdown_menu dropdown_menu--animated dropdown_menu-1">
+                                        <div style="display: flex; justify-content:space-evenly">
+                                            <div>
+                                                <li v-for="(option, index) in filterUI.incidents.options"
+                                                    :key="option.value" class="dropdown-item">
+                                                    <label id="checkmark" v-if="index < 6">
+                                                        <input type="checkbox" v-model="option.checked" />
+                                                        {{ option.label }}
+                                                    </label>
+                                                </li>
+                                            </div>
+                                            <div>
+                                                <li v-for="(option, index) in filterUI.incidents.options"
+                                                    :key="option.value" class="dropdown-item">
+                                                    <label id="checkmark" v-if="index >= 6">
+                                                        <input type="checkbox" v-model="option.checked" />
+                                                        {{ option.label }}
+                                                    </label>
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </button>
+                            <div>
+                                <label for="start-date"><strong>Start Date:</strong></label>
+                                <input id="start-date" type="date" v-model="filterUI.startDate" />
+                                <label for="end-date"><strong>End Date:</strong></label>
+                                <input id="end-date" type="date" v-model="filterUI.endDate" />
+                            </div>
+                            <button id="update-btn" class="ui-btn" @click="this.tryUI()">Update</button>
                         </div>
-                        <button id="update-btn" class="ui-btn" @click="this.tryUI()">Update</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="grid-x grid-padding-x" style="padding: 15px;">
-            <div class="large-12 medium-12 small-12 cell table_format Flipped">
-                <div style="padding: 5px;"></div>
-                <div style="display: flex; justify-content: center;">
-                    <div id="hour-glass-spinner" class="lds-hourglass"></div>
-                </div>
-                
-                <div id="table-content" class="table-format Content">
-                    <table>
-                        <tr>
-                            <th v-for="elements in headerData">{{
-                                    elements.slice(0, 1).toUpperCase() + elements.slice(1)
-                            }}</th>
-                            <th>Delete</th>
-                        </tr>
-                        <tr v-for="(element, index) in tableData" :id="index"
-                            :class="this.bindTableDisplayConditions(element)">
-                            <td>{{ element.case_number }}</td>
-                            <td>{{ element.date }}</td>
-                            <td>{{ element.time }}</td>
-                            <td>{{ element.crimeDesc }}</td>
-                            <td>{{ element.incident }}</td>
-                            <td>{{ element.police_grid }}</td>
-                            <td>{{ element.neighborhood_name }}</td>
-                            <!-- make it into a link that will redirect to neighborhood marker -->
-                            <td><button @click="this.markerchanger(element, index, 'popup')">{{ element.block
-                            }}</button></td>
-                            <!-- make it into a link that will redirect map to exact lat and lon location when clicked -->
-                            <td><button @click="this.markerchanger(element, index, 'table')">DELETE</button></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="large-12 medium-12 small-12 cell Content color-legend">
-                    <div class="color-legend">
-                        <p>Violent Crimes:</p>
-                        <div class="violent box"></div>
+            <div class="grid-x grid-padding-x" style="padding: 15px;">
+                <div class="large-12 medium-12 small-12 cell table_format Flipped">
+                    <div style="padding: 5px;"></div>
+                    <div style="display: flex; justify-content: center;">
+                        <div id="hour-glass-spinner" class="lds-hourglass"></div>
                     </div>
-                    <div class="color-legend">
-                        <p>Property Crimes:</p>
-                        <div class="property box"></div>
+
+                    <div id="table-content" class="table-format Content">
+                        <table>
+                            <tr>
+                                <th v-for="elements in headerData">{{
+                                        elements.slice(0, 1).toUpperCase() + elements.slice(1)
+                                }}</th>
+                                <th>Delete</th>
+                            </tr>
+                            <tr v-for="(element, index) in tableData" :id="index"
+                                :class="this.bindTableDisplayConditions(element)">
+                                <td>{{ element.case_number }}</td>
+                                <td>{{ element.date }}</td>
+                                <td>{{ element.time }}</td>
+                                <td>{{ element.crimeDesc }}</td>
+                                <td>{{ element.incident }}</td>
+                                <td>{{ element.police_grid }}</td>
+                                <td>{{ element.neighborhood_name }}</td>
+                                <!-- make it into a link that will redirect to neighborhood marker -->
+                                <td><button @click="this.markerchanger(element, index, 'popup')">{{ element.block
+                                }}</button></td>
+                                <!-- make it into a link that will redirect map to exact lat and lon location when clicked -->
+                                <td><button @click="this.markerchanger(element, index, 'table')">DELETE</button></td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="color-legend">
-                        <p>Other Crimes:</p>
-                        <div class="other box"></div>
+                    <div class="large-12 medium-12 small-12 cell Content color-legend">
+                        <div class="color-legend">
+                            <p>Violent Crimes:</p>
+                            <div class="violent box"></div>
+                        </div>
+                        <div class="color-legend">
+                            <p>Property Crimes:</p>
+                            <div class="property box"></div>
+                        </div>
+                        <div class="color-legend">
+                            <p>Other Crimes:</p>
+                            <div class="other box"></div>
+                        </div>
                     </div>
+                    <div style="padding: 5px;"></div>
                 </div>
-                <div style="padding: 5px;"></div>
             </div>
         </div>
+    </div>
+    <div class="table_format" style="text-align: center; margin: 20px; padding: 10px;" v-else>
+        The data is unable to load at this time. Please refresh the page and try again. If the problem persists 
+        please contact the admin to get this problem fixed. Sorry for the inconvience. 
     </div>
 </template>
 
 <style>
+
+#over-loading-element {
+    position: absolute; 
+    left: 0px; 
+    top: 0px;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(213, 219, 216, 0.75);
+}
+
 #search-condition {
     width: 150px;
 }
@@ -1038,7 +1058,7 @@ label {
 
 .ui-btn {
     width: 100%;
-    z-index: 5; 
+    z-index: 5;
 }
 
 #filter-dropdown-btn {
@@ -1047,7 +1067,7 @@ label {
 }
 
 .dropdown_menu-1 {
-    animation: growDown 300ms ease-in-out forwards; 
+    animation: growDown 300ms ease-in-out forwards;
     transform-origin: top center;
 }
 
@@ -1069,7 +1089,7 @@ label {
     position: absolute;
     perspective: 1000px;
     display: none;
-    border: solid 1px black; 
+    border: solid 1px black;
 }
 
 .dropdown:hover .dropdown_menu--animated {
@@ -1083,34 +1103,37 @@ label {
 
 
 .lds-hourglass {
-  position: relative;
-  width: 80px;
-  height: 80px; 
-}
-.lds-hourglass:after {
-  content: " ";
-  display: block;
-  border-radius: 50%;
-  width: 0;
-  height: 0;
-  margin: 8px;
-  box-sizing: border-box;
-  border: 32px solid #d5dbd8;
-  border-color: #d5dbd8 transparent #d5dbd8 transparent;
-  animation: lds-hourglass 1.2s infinite;
-}
-@keyframes lds-hourglass {
-  0% {
-    transform: rotate(0);
-    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  }
-  50% {
-    transform: rotate(900deg);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  100% {
-    transform: rotate(1800deg);
-  }
+    position: relative;
+    width: 80px;
+    height: 80px;
 }
 
+.lds-hourglass:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 32px solid #d5dbd8;
+    border-color: #d5dbd8 transparent #d5dbd8 transparent;
+    animation: lds-hourglass 1.2s infinite;
+}
+
+@keyframes lds-hourglass {
+    0% {
+        transform: rotate(0);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+
+    50% {
+        transform: rotate(900deg);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    100% {
+        transform: rotate(1800deg);
+    }
+}
 </style>
