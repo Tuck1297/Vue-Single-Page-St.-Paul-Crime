@@ -20,8 +20,8 @@ export default {
     data() {
         return {
             dataLoaded: true,
-            // APIurl: "https://st-paul-api.herokuapp.com",
-            APIurl: "http://localhost:8000",
+            APIurl: "https://res-tful-api-st-paul-crime-v8z910mfu-tuck1297.vercel.app",
+            // APIurl: "http://localhost:8000",
             codes: [],
             neighborhoods: [],
             incidents: [],

@@ -4,8 +4,8 @@ export default {
     // get data from inputs and send to main file to be sent to api
     data() {
         return {
-            // APIurl: "https://st-paul-api.herokuapp.com",
-            APIurl: "http://localhost:8000",
+            APIurl: "https://res-tful-api-st-paul-crime-v8z910mfu-tuck1297.vercel.app",
+            // APIurl: "http://localhost:8000",
             case_number: "",
             date: "",
             time: "",
