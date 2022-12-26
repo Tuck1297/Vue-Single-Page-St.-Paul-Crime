@@ -20,7 +20,7 @@ export default {
     data() {
         return {
             dataLoaded: true,
-            APIurl: "https://res-tful-api-st-paul-crime-v8z910mfu-tuck1297.vercel.app",
+            APIurl: "https://res-tful-api-st-paul-crime-fyf5uwqp6-tuck1297.vercel.app",
             // APIurl: "http://localhost:8000",
             codes: [],
             neighborhoods: [],
@@ -204,7 +204,7 @@ export default {
             let codeHTTP = `${this.APIurl}/codes?${codesQuery}`;
             let hoodHTTP = `${this.APIurl}/neighborhoods?${hoodQuery}`;
             let incidentHTTP = `${this.APIurl}/incidents?${incidentQuery}`;
-            $("#hour-glass-spinner").css("display", "block");
+            $("#hour-glass-spinner-2").css("display", "block");
             $("#table-content").css("display", "none");
             Promise.all([this.getJSON(codeHTTP), this.getJSON(hoodHTTP), this.getJSON(incidentHTTP)])
                 .then((data) => {
@@ -219,6 +219,7 @@ export default {
                             this.updateNeighborhoodTags();
                         });
                     }
+                    console.log(this.incidents[0])
                     this.tableData = this.incidents;
                     this.tableData = this.incidents.map((element) => {
                         let code = element.code;
@@ -230,12 +231,12 @@ export default {
                         updateVal.block = this.replaceX(block.split(' '));
                         return updateVal;
                     })
-                    $("#hour-glass-spinner").css("display", "none");
+                    $("#hour-glass-spinner-2").css("display", "none");
                     $("#table-content").css("display", "");
                     $("#over-loading-element").css("display", "none");
                 })
                 .catch((err) => {
-                    $("#hour-glass-spinner").css("display", "none");
+                    $("#hour-glass-spinner-2").css("display", "none");
                     $("#table-content").css("display", "");
                     $("#over-loading-element").css("display", "none");
                     console.log(err)
@@ -847,7 +848,7 @@ export default {
                 <div class="large-12 medium-12 small-12 cell table_format Flipped">
                     <div style="padding: 5px;"></div>
                     <div style="display: flex; justify-content: center;">
-                        <div id="hour-glass-spinner" class="lds-hourglass"></div>
+                        <div id="hour-glass-spinner-2" class="lds-hourglass"></div>
                     </div>
 
                     <div id="table-content" class="table-format Content">

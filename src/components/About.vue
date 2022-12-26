@@ -98,6 +98,38 @@ export default defineComponent({
                     HTML, CSS, and JavaScript to make development easier and less cumbersome. 
                     It was used in the main organization of this project.`,
                     assetName: "Vue"
+                },
+                element_8: {
+                    img: "../../images/Cockroach_Labs_Logo.png",
+                    description: `CockroachDB stores copies of data in multiple locations in order to 
+                    deliver speedy access. CockroachDB is designed to run in the cloud and has a 
+                    high fault tolerance. This is used to storethe St. Paul Crime Data in a Postgres SQL Cluster Database.`,
+                    assetName: "Cockroach Labs"
+                },
+                element_9: {
+                    img: "../../images/github.png", 
+                    description: `GitHub, Inc. is an Internet hosting service for software development and version control using Git. 
+                    It is used to host the this front-end UI through their public pages feature.`, 
+                    assetName: "Github"
+                },
+                element_10: {
+                    img: "../../images/postgres.png", 
+                    description: `PostgreSQL also known as Postgres, is a free and open-source relational database management system emphasizing extensibility 
+                    and SQL compliance. It is used in this project to manage the St. Paul Crime Data on Cockroach Labs Database.`,
+                    assetName: "PostgreSQL"
+                }, 
+                element_11: {
+                    img: "../../images/vercel.png", 
+                    description: `Vercel Inc. maintains the Next.js web development framework. Vercel's architecture is built around Jamstack, 
+                    and deployments are handled through Git repositories. I used Vercel to launch a Node.js RESTapi implementation that connects 
+                    to PostgreSQL St. Paul Crime Database`, 
+                    assetName: "Vercel"
+                }, 
+                element_12: {
+                    img: "../../images/stpaul.png", 
+                    description: `The data on this webpage was downloaded as a CSV and uploaded into a PostgreSQL database on Cockroach Labs. This data gives a general 
+                    idea of the crime activity that has taken place in St. Paul, Minnesota from 2014 all the way to November of 2022.`,
+                    assetName: "St. Paul Data"
                 }
             }
         }
