@@ -4,7 +4,7 @@ export default {
     // get data from inputs and send to main file to be sent to api
     data() {
         return {
-            APIurl: "https://res-tful-api-st-paul-crime-fyf5uwqp6-tuck1297.vercel.app",
+            APIurl: "https://res-tful-api-st-paul-crime-c0tm6mbup-tuck1297.vercel.app",
             // APIurl: "http://localhost:8000",
             case_number: "",
             date: "",

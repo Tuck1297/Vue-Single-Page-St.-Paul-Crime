@@ -20,7 +20,7 @@ export default {
     data() {
         return {
             dataLoaded: true,
-            APIurl: "https://res-tful-api-st-paul-crime-fyf5uwqp6-tuck1297.vercel.app",
+            APIurl: "https://res-tful-api-st-paul-crime-c0tm6mbup-tuck1297.vercel.app",
             // APIurl: "http://localhost:8000",
             codes: [],
             neighborhoods: [],
@@ -674,6 +674,7 @@ export default {
                 }
             }
             incidentQuery += incidentString;
+            console.log(incidentQuery)
             this.getData('', '', `${incidentQuery}`);
         }
     },
