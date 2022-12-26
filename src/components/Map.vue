@@ -219,7 +219,6 @@ export default {
                             this.updateNeighborhoodTags();
                         });
                     }
-                    console.log(this.incidents[0])
                     this.tableData = this.incidents;
                     this.tableData = this.incidents.map((element) => {
                         let code = element.code;
