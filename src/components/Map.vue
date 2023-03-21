@@ -352,25 +352,26 @@ export default {
             }
         },
         deleteRecord(case_number, index, color) {
-            if ((color == '#A44A3F' || color == '#D19C1D' || color == '#32936F') && this.leaflet.searchMarker != null) {
-                toRaw(this.leaflet.map).removeLayer(toRaw(this.leaflet.searchMarker))
-                this.leaflet.searchMarker = null;
-            }
-            let url = this.APIurl + "/remove-incident"
-            this.uploadJSON("DELETE", url, { case_number: case_number }).then((data) => {
-                // this.tableData.splice(index, 1);
-                const $table = $('table');
-                // Select the row you want to remove (assuming it has an id of "row-123")
-                const $row = $table.find(`#${index}`);
-                // Remove the row
-                $row.remove();
-                this.scrollToTop();
-                alert("The record has been deleted...");
-            })
-                .catch((err) => {
-                    this.scrollToTop();
-                    alert("The record does not exist or has already been deleted.")
-                })
+            alert("Deleting records has been disabled at this time.");
+            // if ((color == '#A44A3F' || color == '#D19C1D' || color == '#32936F') && this.leaflet.searchMarker != null) {
+            //     toRaw(this.leaflet.map).removeLayer(toRaw(this.leaflet.searchMarker))
+            //     this.leaflet.searchMarker = null;
+            // }
+            // let url = this.APIurl + "/remove-incident"
+            // this.uploadJSON("DELETE", url, { case_number: case_number }).then((data) => {
+            //     // this.tableData.splice(index, 1);
+            //     const $table = $('table');
+            //     // Select the row you want to remove (assuming it has an id of "row-123")
+            //     const $row = $table.find(`#${index}`);
+            //     // Remove the row
+            //     $row.remove();
+            //     this.scrollToTop();
+            //     alert("The record has been deleted...");
+            // })
+            //     .catch((err) => {
+            //         this.scrollToTop();
+            //         alert("The record does not exist or has already been deleted.")
+            //     })
         },
         clampOutOfBounds(coords) {
             let pointX = coords.lng;
